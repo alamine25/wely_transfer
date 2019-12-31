@@ -1,7 +1,10 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: null
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -20,3 +23,6 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    encoders:
+        App\Entity\User:
+            algorithm: auto

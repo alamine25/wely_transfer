@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -89,7 +90,7 @@ class User
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles($roles): self
     {
         $this->roles = $roles;
 
@@ -106,5 +107,14 @@ class User
         $this->role = $role;
 
         return $this;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
     }
 }
