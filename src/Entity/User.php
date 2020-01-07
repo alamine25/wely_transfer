@@ -138,6 +138,8 @@ class User implements UserInterface
     {
         $roles = $this->roles;
 
+        //$roles[] = ['ROLE_USER'];
+
         $roles = array();
 
         return array_unique($roles);
