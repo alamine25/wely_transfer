@@ -5,12 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     /**
      * @ORM\Id()
@@ -18,7 +19,24 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-     /**
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $prenom;
@@ -34,34 +52,92 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-
-    /**
      * @ORM\Column(type="boolean")
      */
-    private $etat;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    private $isActive;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
      */
     private $role;
+    public function __construct()
+    {
+        $this->isActive=true;
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+
+        return array_unique($roles);
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
     public function getPrenom(): ?string
     {
         return $this->prenom;
@@ -98,57 +174,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getIsActive(): ?bool
     {
-        return $this->username;
+        return $this->isActive;
     }
 
-    public function setUsername(string $username): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getEtat(): ?bool
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(bool $etat): self
-    {
-        $this->etat = $etat;
-
-        return $this;
-    }
-
-    public function getRoles(): ?array
-    {
-        $roles = $this->roles;
-
-        //$roles[] = ['ROLE_USER'];
-
-        $roles = array();
-
-        return array_unique($roles);
-
-    }
-
-    public function setRoles($roles): self
-    {
-        $this->roles = $roles;
+        $this->isActive = $isActive;
 
         return $this;
     }
@@ -164,14 +197,22 @@ class User implements UserInterface
 
         return $this;
     }
-
-    public function getSalt()
+    public function isAccountNonExpired()
     {
-        return null;
+        return true;
     }
 
-    public function eraseCredentials()
+    public function isAccountNonLocked()
     {
+        return true;
     }
 
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
 }
