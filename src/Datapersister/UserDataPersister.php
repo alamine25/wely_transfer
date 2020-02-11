@@ -1,5 +1,5 @@
 <?php
-namespace App\DataPersister;
+namespace App\Datapersister;
 
 use App\Entity\User;
 use App\DataPersister\UserDataPersister;

@@ -2,16 +2,31 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     itemOperations={
+ *          "get"={
+ *              "normalization_context"={"groups"={"user:read", "user:item:get"}},
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('POST_EDIT', object)",
+ *              "access_control_message"="Accés non autorisé"
+ *          },
+ *          "delete"={"access_control"="is_granted('POST_EDIT',object)"}
+ *     },
+ *     collectionOperations={
+ *          "get"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *          "post"={"access_control"="is_granted('POST_EDIT',object)"}
+ *     })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements AdvancedUserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -28,7 +43,7 @@ class User implements AdvancedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    //private $roles = [];
 
     /**
      * @var string The hashed password
@@ -88,23 +103,17 @@ class User implements AdvancedUserInterface
         return $this;
     }
 
-    /**
+   /**
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles[] = $this->role->getLibelle();
         // guarantee every user at least has ROLE_USER
 
         return array_unique($roles);
     }
-
-    public function setRoles($roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+    
 
     /**
      * @see UserInterface
