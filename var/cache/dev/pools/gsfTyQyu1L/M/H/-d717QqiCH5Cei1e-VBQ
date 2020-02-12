@@ -1,0 +1,77 @@
+<?php
+
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (($p = &Registry::$prototypes)['Symfony\\Component\\ExpressionLanguage\\ParsedExpression'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\ParsedExpression')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\FunctionNode'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\FunctionNode')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\Node'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\Node')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\ArrayNode'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\ArrayNode')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode')),
+        clone $p['Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode'],
+        clone $p['Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode'],
+        clone $p['Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode'],
+    ],
+    null,
+    [
+        'Symfony\\Component\\ExpressionLanguage\\ParsedExpression' => [
+            'nodes' => [
+                $o[1],
+            ],
+        ],
+        'Symfony\\Component\\ExpressionLanguage\\Expression' => [
+            'expression' => [
+                'is_granted([\'ROLE_SUPER_ADMIN\',\'ROLE_ADMIN\'])',
+            ],
+        ],
+        'stdClass' => [
+            'nodes' => [
+                1 => [
+                    'arguments' => $o[2],
+                ],
+                [
+                    $o[3],
+                ],
+                [
+                    $o[4],
+                    $o[5],
+                    $o[6],
+                    $o[7],
+                ],
+            ],
+            'attributes' => [
+                1 => [
+                    'name' => 'is_granted',
+                ],
+                4 => [
+                    'value' => 0,
+                ],
+                [
+                    'value' => 'ROLE_SUPER_ADMIN',
+                ],
+                [
+                    'value' => 1,
+                ],
+                [
+                    'value' => 'ROLE_ADMIN',
+                ],
+            ],
+        ],
+        'Symfony\\Component\\ExpressionLanguage\\Node\\ArrayNode' => [
+            'index' => [
+                3 => 1,
+            ],
+        ],
+        'Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode' => [
+            'isIdentifier' => [
+                4 => false,
+                false,
+                false,
+                false,
+            ],
+        ],
+    ],
+    $o[0],
+    []
+);

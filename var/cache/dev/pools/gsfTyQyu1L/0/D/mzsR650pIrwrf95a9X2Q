@@ -1,0 +1,50 @@
+<?php
+
+namespace Symfony\Component\VarExporter\Internal;
+
+return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
+    $o = [
+        clone (($p = &Registry::$prototypes)['Symfony\\Component\\ExpressionLanguage\\ParsedExpression'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\ParsedExpression')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\FunctionNode'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\FunctionNode')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\Node'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\Node')),
+        clone ($p['Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode'] ?? Registry::p('Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode')),
+    ],
+    null,
+    [
+        'Symfony\\Component\\ExpressionLanguage\\ParsedExpression' => [
+            'nodes' => [
+                $o[1],
+            ],
+        ],
+        'Symfony\\Component\\ExpressionLanguage\\Expression' => [
+            'expression' => [
+                'is_granted(\'ROLE_ADMIN\')',
+            ],
+        ],
+        'stdClass' => [
+            'nodes' => [
+                1 => [
+                    'arguments' => $o[2],
+                ],
+                [
+                    $o[3],
+                ],
+            ],
+            'attributes' => [
+                1 => [
+                    'name' => 'is_granted',
+                ],
+                3 => [
+                    'value' => 'ROLE_ADMIN',
+                ],
+            ],
+        ],
+        'Symfony\\Component\\ExpressionLanguage\\Node\\ConstantNode' => [
+            'isIdentifier' => [
+                3 => false,
+            ],
+        ],
+    ],
+    $o[0],
+    []
+);
