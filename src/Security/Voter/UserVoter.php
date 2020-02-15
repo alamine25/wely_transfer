@@ -40,6 +40,13 @@ class UserVoter extends Voter implements VoterInterface
                     return true;
                 }else if($userConnect->getRoles()[0]==="ROLE_CAISSIER"){
                     return false;
+                }elseif($userConnect->getRoles()[0]==="ROLE_PARTENAIRE" && ($subject->getRoles()[0] === "ROLE_ADMIN_PARTENAIRE" || $subject->getRoles()[0] === "ROLE_CAISSIER_PARTENAIRE")){
+                    return true;
+                }elseif($userConnect->getRoles()[0]==="ROLE_ADMIN_PARTENAIRE" && ($subject->getRoles()[0] === "ROLE_CAISSIER_PARTENAIRE" )){
+                    return true;
+                }
+                else if($userConnect->getRoles()[0]==="ROLE_CAISSIER_PARTENAIRE"){
+                    return false;
                 }
                           
                 // return true or false

@@ -113,7 +113,7 @@ class CompteController extends AbstractController
     
             $ReposPartenaire = $this->getDoctrine()->getRepository(Partenaire::class);
                // 
-               $partenaire = $ReposPartenaire->findOneByNinea($values->ninea);
+            $partenaire = $ReposPartenaire->findOneByNinea($values->ninea);
            if ($partenaire) 
            {
                if ($values->montantDepot > 0) 
@@ -121,8 +121,6 @@ class CompteController extends AbstractController
                    $createdAt = new \DateTime();
                    $depot = new Depot();
                    $compte = new Compte();
-                   #####   COMPTE    ######
-                
                    // 
                    $user = $this->tokenStorage->getToken()->getUser();
 
@@ -132,6 +130,9 @@ class CompteController extends AbstractController
                    $long = strlen($cpt);
                    $ninea2 = substr($partenaire->getNinea(), -2);
                    $numeroCompte = str_pad("SN".$annee.$ninea2, 11-$long, "0").$cpt;
+
+                    #####   COMPTE    ######
+
                    $compte->setNumeroCompte($numeroCompte);
                    $compte->setSolde($values->montantDepot);
                    $compte->setCreatedAt($createdAt);
